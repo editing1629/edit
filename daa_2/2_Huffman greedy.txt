@@ -1,0 +1,70 @@
+
+import heapq
+
+# Node class
+class Node:
+    def __init__(self, char, freq):
+        self.char = char
+        self.freq = freq
+        self.left = None
+        self.right = None
+
+# Accept input
+n = int(input("Enter number of characters: "))
+heap = []
+
+for i in range(n):
+    char = input("Enter character: ")
+    freq = int(input("Enter frequency: "))
+    heapq.heappush(heap, (freq, i, Node(char, freq)))
+
+# Build Huffman Tree
+count = n
+while len(heap) > 1:
+    f1, _, left = heapq.heappop(heap)
+    f2, _, right = heapq.heappop(heap)
+
+    new = Node(None, f1 + f2)
+    new.left = left
+    new.right = right
+
+    heapq.heappush(heap, (new.freq, count, new))
+    count += 1
+
+# Generate Huffman Codes
+def display(root, code=""):
+    if root.char is not None:
+        print(root.char, ":", code if code else "0")
+        return
+
+    display(root.left, code + "0")
+    display(root.right, code + "1")
+
+# Display result
+print("\nHuffman Codes:")
+if heap:
+    display(heap[0][2])
+
+
+# Sample Output:
+# Enter number of characters: 6
+# Enter character: a
+# Enter frequency: 5
+# Enter character: b
+# Enter frequency: 9
+# Enter character: c
+# Enter frequency: 12
+# Enter character: d
+# Enter frequency: 13
+# Enter character: e
+# Enter frequency: 16
+# Enter character: f
+# Enter frequency: 45
+#
+# Huffman Codes:
+# f : 0
+# c : 100
+# d : 101
+# a : 1100
+# b : 1101
+# e : 111
