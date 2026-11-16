@@ -1,0 +1,57 @@
+
+import random
+import time
+
+# Deterministic Quick Sort
+def deterministic(a):
+    if len(a) <= 1:
+        return a
+    p = a[0]
+    return (deterministic([x for x in a[1:] if x <= p])
+            + [p] +
+            deterministic([x for x in a[1:] if x > p]))
+
+# Randomized Quick Sort
+def randomized(a):
+    if len(a) <= 1:
+        return a
+    p = random.choice(a)
+    return (randomized([x for x in a if x < p])
+            + [p] +
+            randomized([x for x in a if x > p]))
+
+# Accept input
+n = int(input("Enter number of elements: "))
+arr = [int(input("Enter element: ")) for i in range(n)]
+
+# Analyze both algorithms
+for name, sort in [("Deterministic", deterministic),
+                   ("Randomized", randomized)]:
+    start = time.time()
+    result = sort(arr.copy())
+    elapsed = time.time() - start
+
+    print("\n" + name + " Quick Sort:", result)
+    print("Execution Time:", elapsed, "seconds")
+
+# Complexity Analysis
+print("\nBest/Average: O(n log n)")
+print("Worst Case: O(n^2)")
+
+
+# Sample Output:
+# Enter number of elements: 5
+# Enter element: 40
+# Enter element: 10
+# Enter element: 50
+# Enter element: 20
+# Enter element: 30
+#
+# Deterministic Quick Sort: [10, 20, 30, 40, 50]
+# Execution Time: (varies) seconds
+#
+# Randomized Quick Sort: [10, 20, 30, 40, 50]
+# Execution Time: (varies) seconds
+#
+# Best/Average: O(n log n)
+# Worst Case: O(n^2)
